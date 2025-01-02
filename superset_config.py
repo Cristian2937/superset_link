@@ -13,8 +13,9 @@ DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 # Build the SQLALCHEMY_DATABASE_URI using the loaded environment variables
 SQLALCHEMY_DATABASE_URI = f'postgresql+psycopg2://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:5432/{DATABASE_DB}'
 
+BABEL_DEFAULT_LOCALE = "it"
 
 LANGUAGES = {
     'en': {'flag': 'us', 'name': 'English'},
-    'it': {'flag': 'it', 'name': 'Italian'},
+    'it': {'flag': 'it', 'name': 'Italiano'},
 }
