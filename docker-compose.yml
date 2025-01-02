@@ -1,0 +1,41 @@
+services:
+  db:
+    extends:
+      file: ./docker_foundation/superset/docker-compose.yaml
+      service: db
+    env_file:
+      - .env
+  redis:
+    extends:
+      file: ./docker_foundation/superset/docker-compose.yaml
+      service: redis
+
+  superset_link:
+    extends:
+      file: ./docker_foundation/superset/docker-compose.yaml
+      service: superset_link
+    env_file:
+      - .env
+    volumes:
+      - superset_home:/app/superset_home
+      - ./..env:/app/..env
+      - ./superset_config.py:/app/pythonpath/superset_config.py
+      # sovrascrittura dei file con le traduzioni in italiano
+      - ./translations/it:/app/superset/translations/it/LC_MESSAGES:rw
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@superset.com --password admin
+        superset db upgrade
+        superset init
+        superset run -h 0.0.0.0 -p 8088
+
+volumes:
+  db_home:
+  superset_home:
+
+networks:
+  superset_network:
+    external: true
+    name: superset_network
